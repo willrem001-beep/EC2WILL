@@ -1,0 +1,25 @@
+name: Despliegue a EC2 AWS  
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  deploy:
+    name: despliegue a ec2 en la rama main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v2
+
+      - name: Deploy to Server srvWill
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: $({ secrets.EC2_SSH_KEY })
+          REMOTE_HOST: $({ secrets.HOST_DNS })
+          REMOTE_USER: $({ secrets.USERNAME })
+          TARGET: $({ secrets.TARGET_DIR })
